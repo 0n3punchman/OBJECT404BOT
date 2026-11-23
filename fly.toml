@@ -1,5 +1,5 @@
 # Замените имя на уникальное (латиница, цифры, дефисы), например object404bot-kirill
-app = "CHANGE-ME"
+app = "object404bot1"
 primary_region = "fra"
 
 [build]

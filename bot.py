@@ -128,13 +128,23 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 def main() -> None:
     if not TOKEN:
         raise RuntimeError("Set BOT_TOKEN in the environment before starting the bot.")
-    app: Application = Application.builder().token(TOKEN).build()
+
+    app = (
+        Application.builder()
+        .token(TOKEN)
+        .connect_timeout(30)
+        .read_timeout(30)
+        .write_timeout(30)
+        .pool_timeout(30)
+        .build()
+    )
+
     app.add_handler(CommandHandler(["start", "help", "menu"], start))
     app.add_handler(CommandHandler("myid", myid))
     app.add_handler(CallbackQueryHandler(button))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
-    app.run_polling()
 
-
+    app.run_polling(bootstrap_retries=5)
+    
 if __name__ == "__main__":
     main()

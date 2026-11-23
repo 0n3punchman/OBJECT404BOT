@@ -1,0 +1,22 @@
+# Замените имя на уникальное (латиница, цифры, дефисы), например object404bot-kirill
+app = "CHANGE-ME"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+# Бот работает через polling и не принимает HTTP-запросы, поэтому [http_service] не нужен.
+# immediate: старая копия останавливается сразу, две копии одного бота вместе не живут.
+[deploy]
+  strategy = "immediate"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+# Чтобы заказы (orders.json) не пропадали при деплое, раскомментируйте блок ниже,
+# создайте том командой: fly volumes create botdata --size 1 --region fra
+# и добавьте секрет DATA_DIR=/data
+# [mounts]
+#   source = "botdata"
+#   destination = "/data"
